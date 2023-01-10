@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import rpe.estagio.desafio3.model.entity.VeiculoDeCarga;
 import rpe.estagio.desafio3.presentation.dto.VeiculoDeCargaDTO;
 import rpe.estagio.desafio3.service.VeiculoDeCargaService;
+import rpe.estagio.desafio3.template.DTOConverter;
 
 @RestController
 @RequestMapping(value = "/veiculoDeCarga")
@@ -25,65 +26,67 @@ public class VeiculoDeCargaController {
 
     @Autowired
     private VeiculoDeCargaService service;
+    @Autowired
+    private DTOConverter<VeiculoDeCarga, VeiculoDeCargaDTO> converter;
 
     @PostMapping
-    public ResponseEntity<VeiculoDeCarga> create(@RequestBody VeiculoDeCargaDTO dto) throws Exception {
+    public ResponseEntity<VeiculoDeCargaDTO> create(@RequestBody VeiculoDeCargaDTO dto) throws Exception {
         try {
-            return new ResponseEntity<>(service.create(dto), HttpStatus.CREATED);
+            return new ResponseEntity<>(converter.toDTO(service.create(dto)), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/find/id/{id}")
-    public ResponseEntity<VeiculoDeCarga> findById(@PathVariable Long id) {
+    public ResponseEntity<VeiculoDeCargaDTO> findById(@PathVariable Long id) {
         try {
-            return new ResponseEntity<>(service.findById(id), HttpStatus.OK);
+            return new ResponseEntity<>(converter.toDTO(service.findById(id)), HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @GetMapping("/find/placa/{placa}")
-    public ResponseEntity<VeiculoDeCarga> findByPlaca(@PathVariable String placa) {
+    public ResponseEntity<VeiculoDeCargaDTO> findByPlaca(@PathVariable String placa) {
         try {
-            return new ResponseEntity<>(service.findByPlaca(placa), HttpStatus.OK);
+            return new ResponseEntity<>(converter.toDTO(service.findByPlaca(placa)), HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @GetMapping("/find/nome/{nome}")
-    public ResponseEntity<Iterable<VeiculoDeCarga>> findByNome(@PathVariable String nome) {
+    public ResponseEntity<Iterable<VeiculoDeCargaDTO>> findByNome(@PathVariable String nome) {
         try {
-            return new ResponseEntity<>(service.findByNome(nome), HttpStatus.OK);
+            return new ResponseEntity<>(converter.toDTOIter(service.findByNome(nome)), HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @GetMapping("/find/marca/{marca}")
-    public ResponseEntity<Iterable<VeiculoDeCarga>> findByMarca(@PathVariable String marca) {
+    public ResponseEntity<Iterable<VeiculoDeCargaDTO>> findByMarca(@PathVariable String marca) {
         try {
-            return new ResponseEntity<>(service.findByMarca(marca), HttpStatus.OK);
+            return new ResponseEntity<>(converter.toDTOIter(service.findByMarca(marca)), HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<Iterable<VeiculoDeCarga>> findAll() {
+    public ResponseEntity<Iterable<VeiculoDeCargaDTO>> findAll() {
         try {
-            return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
+            return new ResponseEntity<>(converter.toDTOIter(service.findAll()), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping
-    public ResponseEntity<VeiculoDeCarga> update(@RequestParam Long id, @RequestBody VeiculoDeCargaDTO dto) {
+    public ResponseEntity<VeiculoDeCargaDTO> update(@RequestParam Long id, @RequestBody VeiculoDeCargaDTO dto) {
         try {
-            return new ResponseEntity<>(service.update(id, dto), HttpStatus.CREATED);
+            return new ResponseEntity<>(converter.toDTO(service.update(id, dto)), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

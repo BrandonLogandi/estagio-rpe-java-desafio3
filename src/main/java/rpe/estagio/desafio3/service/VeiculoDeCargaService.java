@@ -8,30 +8,24 @@ import org.springframework.stereotype.Service;
 import rpe.estagio.desafio3.model.entity.VeiculoDeCarga;
 import rpe.estagio.desafio3.model.repository.VeiculoRepository;
 import rpe.estagio.desafio3.presentation.dto.VeiculoDeCargaDTO;
-
-import rpe.estagio.desafio3.template.VeiculoServiceTemplate;
+import rpe.estagio.desafio3.template.DTOConverter;
+import rpe.estagio.desafio3.template.VeiculoService;
 
 @Service
 @SuppressWarnings("java:S112")
-public class VeiculoDeCargaService implements VeiculoServiceTemplate<VeiculoDeCarga, VeiculoDeCargaDTO> {
+public class VeiculoDeCargaService implements VeiculoService<VeiculoDeCarga, VeiculoDeCargaDTO> {
 
     @Autowired
     private VeiculoRepository<VeiculoDeCarga> repository;
+    @Autowired
+    private DTOConverter<VeiculoDeCarga, VeiculoDeCargaDTO> converter;
 
     @Override
     public VeiculoDeCarga create(VeiculoDeCargaDTO dto) throws Exception {
         if (repository.findByPlaca(dto.getPlaca()).isPresent())
             throw new Exception("Veiculo com mesma placa já existe: " + dto.getPlaca());
 
-        VeiculoDeCarga v = VeiculoDeCarga.builder()
-                .placa(dto.getPlaca())
-                .nome(dto.getNome())
-                .marca(dto.getMarca())
-                .capacidade(dto.getCapacidade())
-                .qtdCarroceria(dto.getQtdCarroceria())
-                .build();
-
-        return repository.save(v);
+        return repository.save(converter.toEntity(dto));
     }
 
     @Override

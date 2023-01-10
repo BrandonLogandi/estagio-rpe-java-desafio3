@@ -6,7 +6,7 @@ import rpe.estagio.desafio3.model.entity.Veiculo;
 import rpe.estagio.desafio3.presentation.dto.VeiculoDTO;
 
 @SuppressWarnings("java:S112")
-public interface VeiculoServiceTemplate<T extends Veiculo, D extends VeiculoDTO> {
+public interface VeiculoService<T extends Veiculo, D extends VeiculoDTO> {
 
     public T create(D dto) throws Exception;
 
