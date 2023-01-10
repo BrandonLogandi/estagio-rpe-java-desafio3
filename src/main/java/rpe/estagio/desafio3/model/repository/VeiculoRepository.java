@@ -12,8 +12,8 @@ public interface VeiculoRepository extends CrudRepository<Veiculo, Long> {
 
     Optional<Veiculo> findByPlaca(String placa);
 
-    Optional<Veiculo> findByNome(String nome);
+    Iterable<Veiculo> findByNome(String nome);
 
-    Optional<Veiculo> findByMarca(String marca);
+    Iterable<Veiculo> findByMarca(String marca);
 
 }

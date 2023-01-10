@@ -7,6 +7,7 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import rpe.estagio.desafio3.model.entity.Veiculo;
 import rpe.estagio.desafio3.model.entity.VeiculoDePasseio;
 import rpe.estagio.desafio3.model.repository.VeiculoDePasseioRepository;
 import rpe.estagio.desafio3.presentation.dto.VeiculoDePasseioDTO;
@@ -41,13 +42,13 @@ public class VeiculoDePasseioService implements VeiculoServiceTemplate<VeiculoDe
     }
 
     @Override
-    public VeiculoDePasseio findByNome(String nome) throws NoSuchElementException {
-        return (VeiculoDePasseio) repository.findByNome(nome).orElseThrow();
+    public List<VeiculoDePasseio> findByNome(String nome) throws NoSuchElementException {
+        return this.castToList(repository.findByNome(nome));
     }
 
     @Override
-    public VeiculoDePasseio findByMarca(String marca) throws NoSuchElementException {
-        return (VeiculoDePasseio) repository.findByMarca(marca).orElseThrow();
+    public List<VeiculoDePasseio> findByMarca(String marca) throws NoSuchElementException {
+        return this.castToList(repository.findByMarca(marca));
     }
 
     @Override
@@ -57,10 +58,7 @@ public class VeiculoDePasseioService implements VeiculoServiceTemplate<VeiculoDe
 
     @Override
     public List<VeiculoDePasseio> findAll() {
-        List<VeiculoDePasseio> list = new ArrayList<>();
-        repository.findAll().forEach(v -> list.add((VeiculoDePasseio) v));
-
-        return list;
+        return this.castToList(repository.findAll());
     }
 
     @Override
@@ -80,6 +78,13 @@ public class VeiculoDePasseioService implements VeiculoServiceTemplate<VeiculoDe
     @Override
     public void delete(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public List<VeiculoDePasseio> castToList(Iterable<Veiculo> iterable) {
+        List<VeiculoDePasseio> list = new ArrayList<>();
+        iterable.forEach(v -> list.add((VeiculoDePasseio) v));
+        return list;
     }
 
 }

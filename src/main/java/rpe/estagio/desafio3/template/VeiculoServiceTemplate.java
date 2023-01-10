@@ -15,14 +15,16 @@ public interface VeiculoServiceTemplate<T extends Veiculo, D extends VeiculoDTO>
 
     public T findByPlaca(String placa) throws NoSuchElementException;
 
-    public T findByNome(String nome) throws NoSuchElementException;
+    public List<T> findByNome(String nome) throws NoSuchElementException;
 
-    public T findByMarca(String marca) throws NoSuchElementException;
+    public List<T> findByMarca(String marca) throws NoSuchElementException;
 
     public List<T> findAll();
 
     public T update(Long id, D dto) throws NoSuchElementException;
 
     public void delete(Long id);
+
+    public List<T> castToList(Iterable<Veiculo> iterable);
 
 }

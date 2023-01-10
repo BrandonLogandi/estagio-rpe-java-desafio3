@@ -7,6 +7,7 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import rpe.estagio.desafio3.model.entity.Veiculo;
 import rpe.estagio.desafio3.model.entity.VeiculoDeCarga;
 import rpe.estagio.desafio3.model.repository.VeiculoDeCargaRepository;
 import rpe.estagio.desafio3.presentation.dto.VeiculoDeCargaDTO;
@@ -47,21 +48,18 @@ public class VeiculoDeCargaService implements VeiculoServiceTemplate<VeiculoDeCa
     }
 
     @Override
-    public VeiculoDeCarga findByNome(String nome) throws NoSuchElementException {
-        return (VeiculoDeCarga) repository.findByNome(nome).orElseThrow();
+    public List<VeiculoDeCarga> findByNome(String nome) throws NoSuchElementException {
+        return this.castToList(repository.findByNome(nome));
     }
 
     @Override
-    public VeiculoDeCarga findByMarca(String marca) throws NoSuchElementException {
-        return (VeiculoDeCarga) repository.findByMarca(marca).orElseThrow();
+    public List<VeiculoDeCarga> findByMarca(String marca) throws NoSuchElementException {
+        return this.castToList(repository.findByMarca(marca));
     }
 
     @Override
     public List<VeiculoDeCarga> findAll() {
-        List<VeiculoDeCarga> list = new ArrayList<>();
-        repository.findAll().forEach(v -> list.add((VeiculoDeCarga) v));
-
-        return list;
+        return this.castToList(repository.findAll());
     }
 
     @Override
@@ -83,6 +81,13 @@ public class VeiculoDeCargaService implements VeiculoServiceTemplate<VeiculoDeCa
     @Override
     public void delete(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public List<VeiculoDeCarga> castToList(Iterable<Veiculo> iterable) {
+        List<VeiculoDeCarga> list = new ArrayList<>();
+        iterable.forEach(v -> list.add((VeiculoDeCarga) v));
+        return list;
     }
 
 }
