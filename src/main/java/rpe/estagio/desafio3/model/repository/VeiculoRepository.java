@@ -8,12 +8,12 @@ import org.springframework.data.repository.NoRepositoryBean;
 import rpe.estagio.desafio3.model.entity.Veiculo;
 
 @NoRepositoryBean
-public interface VeiculoRepository extends CrudRepository<Veiculo, Long> {
+public interface VeiculoRepository<T extends Veiculo> extends CrudRepository<T, Long> {
 
-    Optional<Veiculo> findByPlaca(String placa);
+    Optional<T> findByPlaca(String placa);
 
-    Iterable<Veiculo> findByNome(String nome);
+    Iterable<T> findByNome(String nome);
 
-    Iterable<Veiculo> findByMarca(String marca);
+    Iterable<T> findByMarca(String marca);
 
 }

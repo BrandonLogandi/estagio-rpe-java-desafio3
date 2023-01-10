@@ -7,9 +7,8 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import rpe.estagio.desafio3.model.entity.Veiculo;
 import rpe.estagio.desafio3.model.entity.VeiculoDePasseio;
-import rpe.estagio.desafio3.model.repository.VeiculoDePasseioRepository;
+import rpe.estagio.desafio3.model.repository.VeiculoRepository;
 import rpe.estagio.desafio3.presentation.dto.VeiculoDePasseioDTO;
 
 import rpe.estagio.desafio3.template.VeiculoServiceTemplate;
@@ -19,7 +18,7 @@ import rpe.estagio.desafio3.template.VeiculoServiceTemplate;
 public class VeiculoDePasseioService implements VeiculoServiceTemplate<VeiculoDePasseio, VeiculoDePasseioDTO> {
 
     @Autowired
-    private VeiculoDePasseioRepository repository;
+    private VeiculoRepository<VeiculoDePasseio> repository;
 
     @Override
     public VeiculoDePasseio create(VeiculoDePasseioDTO dto) throws Exception {
@@ -38,7 +37,7 @@ public class VeiculoDePasseioService implements VeiculoServiceTemplate<VeiculoDe
 
     @Override
     public VeiculoDePasseio findById(Long id) throws NoSuchElementException {
-        return (VeiculoDePasseio) repository.findById(id).orElseThrow();
+        return repository.findById(id).orElseThrow();
     }
 
     @Override
@@ -53,7 +52,7 @@ public class VeiculoDePasseioService implements VeiculoServiceTemplate<VeiculoDe
 
     @Override
     public VeiculoDePasseio findByPlaca(String placa) throws NoSuchElementException {
-        return (VeiculoDePasseio) repository.findByPlaca(placa).orElseThrow();
+        return repository.findByPlaca(placa).orElseThrow();
     }
 
     @Override
@@ -81,9 +80,9 @@ public class VeiculoDePasseioService implements VeiculoServiceTemplate<VeiculoDe
     }
 
     @Override
-    public List<VeiculoDePasseio> castToList(Iterable<Veiculo> iterable) {
+    public List<VeiculoDePasseio> castToList(Iterable<VeiculoDePasseio> iterable) {
         List<VeiculoDePasseio> list = new ArrayList<>();
-        iterable.forEach(v -> list.add((VeiculoDePasseio) v));
+        iterable.forEach(list::add);
         return list;
     }
 

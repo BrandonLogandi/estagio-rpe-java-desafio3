@@ -25,6 +25,6 @@ public interface VeiculoServiceTemplate<T extends Veiculo, D extends VeiculoDTO>
 
     public void delete(Long id);
 
-    public List<T> castToList(Iterable<Veiculo> iterable);
+    public List<T> castToList(Iterable<T> iterable);
 
 }
