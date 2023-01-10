@@ -1,7 +1,5 @@
 package rpe.estagio.desafio3.service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,23 +39,23 @@ public class VeiculoDePasseioService implements VeiculoServiceTemplate<VeiculoDe
     }
 
     @Override
-    public List<VeiculoDePasseio> findByNome(String nome) throws NoSuchElementException {
-        return this.castToList(repository.findByNome(nome));
-    }
-
-    @Override
-    public List<VeiculoDePasseio> findByMarca(String marca) throws NoSuchElementException {
-        return this.castToList(repository.findByMarca(marca));
-    }
-
-    @Override
     public VeiculoDePasseio findByPlaca(String placa) throws NoSuchElementException {
         return repository.findByPlaca(placa).orElseThrow();
     }
 
     @Override
-    public List<VeiculoDePasseio> findAll() {
-        return this.castToList(repository.findAll());
+    public Iterable<VeiculoDePasseio> findByNome(String nome) throws NoSuchElementException {
+        return repository.findByNome(nome);
+    }
+
+    @Override
+    public Iterable<VeiculoDePasseio> findByMarca(String marca) throws NoSuchElementException {
+        return repository.findByMarca(marca);
+    }
+
+    @Override
+    public Iterable<VeiculoDePasseio> findAll() {
+        return repository.findAll();
     }
 
     @Override
@@ -77,13 +75,6 @@ public class VeiculoDePasseioService implements VeiculoServiceTemplate<VeiculoDe
     @Override
     public void delete(Long id) {
         repository.deleteById(id);
-    }
-
-    @Override
-    public List<VeiculoDePasseio> castToList(Iterable<VeiculoDePasseio> iterable) {
-        List<VeiculoDePasseio> list = new ArrayList<>();
-        iterable.forEach(list::add);
-        return list;
     }
 
 }

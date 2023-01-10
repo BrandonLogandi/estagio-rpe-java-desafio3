@@ -1,6 +1,5 @@
 package rpe.estagio.desafio3.template;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import rpe.estagio.desafio3.model.entity.Veiculo;
@@ -15,16 +14,14 @@ public interface VeiculoServiceTemplate<T extends Veiculo, D extends VeiculoDTO>
 
     public T findByPlaca(String placa) throws NoSuchElementException;
 
-    public List<T> findByNome(String nome) throws NoSuchElementException;
+    public Iterable<T> findByNome(String nome) throws NoSuchElementException;
 
-    public List<T> findByMarca(String marca) throws NoSuchElementException;
+    public Iterable<T> findByMarca(String marca) throws NoSuchElementException;
 
-    public List<T> findAll();
+    public Iterable<T> findAll();
 
     public T update(Long id, D dto) throws NoSuchElementException;
 
     public void delete(Long id);
-
-    public List<T> castToList(Iterable<T> iterable);
 
 }
