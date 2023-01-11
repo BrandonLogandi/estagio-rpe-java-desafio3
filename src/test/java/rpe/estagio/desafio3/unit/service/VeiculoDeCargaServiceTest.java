@@ -1,6 +1,8 @@
 package rpe.estagio.desafio3.unit.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -11,6 +13,8 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -65,7 +69,18 @@ class VeiculoDeCargaServiceTest {
 
         VeiculoDeCarga actual = service.create(expectedDto);
         assertEquals(expected, actual);
+        verify(repository, times(1)).findByPlaca(anyString());
         verify(repository, times(1)).save(any(VeiculoDeCarga.class));
+        verifyNoMoreInteractions(repository);
+    }
+
+    @Test
+    void testCreateExistent() throws Exception {
+        when(repository.findByPlaca(anyString())).thenReturn(Optional.of(expected));
+
+        Exception thrown = assertThrows(Exception.class, () -> {service.create(expectedDto);});
+        assertEquals("Veiculo com mesma placa já existe: AAAAAAA", thrown.getMessage());
+        verify(repository, times(1)).findByPlaca(anyString());
         verifyNoMoreInteractions(repository);
     }
 
@@ -97,10 +112,28 @@ class VeiculoDeCargaServiceTest {
     }
 
     @Test
+    void testFindByInvalidId() {
+        when(repository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(NoSuchElementException.class, () -> {service.findById(0l);});
+        verify(repository, times(1)).findById(anyLong());
+        verifyNoMoreInteractions(repository);
+    }
+
+    @Test
     void testFindByMarca() {
         when(repository.findByMarca(anyString())).thenReturn(expectedIter);
 
         assertEquals(expectedIter, service.findByMarca(""));
+        verify(repository, times(1)).findByMarca(anyString());
+        verifyNoMoreInteractions(repository);
+    }
+
+    @Test
+    void testFindByInvalidMarca() {
+        when(repository.findByMarca(anyString())).thenReturn(List.of());
+
+        assertTrue(!service.findByMarca("").iterator().hasNext());
         verify(repository, times(1)).findByMarca(anyString());
         verifyNoMoreInteractions(repository);
     }
@@ -115,10 +148,28 @@ class VeiculoDeCargaServiceTest {
     }
 
     @Test
+    void testFindByInvalidNome() {
+        when(repository.findByNome(anyString())).thenReturn(List.of());
+
+        assertTrue(!service.findByNome("").iterator().hasNext());
+        verify(repository, times(1)).findByNome(anyString());
+        verifyNoMoreInteractions(repository);
+    }
+
+    @Test
     void testFindByPlaca() {
         when(repository.findByPlaca(anyString())).thenReturn(Optional.of(expected));
 
         assertEquals(expected, service.findByPlaca(""));
+        verify(repository, times(1)).findByPlaca(anyString());
+        verifyNoMoreInteractions(repository);
+    }
+
+    @Test
+    void testFindByInvalidPlaca() {
+        when(repository.findByPlaca(anyString())).thenReturn(Optional.empty());
+
+        assertThrows(NoSuchElementException.class, () -> {service.findByPlaca("");});
         verify(repository, times(1)).findByPlaca(anyString());
         verifyNoMoreInteractions(repository);
     }
