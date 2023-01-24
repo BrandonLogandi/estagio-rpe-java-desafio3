@@ -3,9 +3,6 @@
 Este repositório contém a solução do desafio 3 da seleção de estagiários da RPE para Backend em Java. O projeto tem como objetivo disponibilizar uma API para o cadastro de veículos de diferentes portes para uma empresa. Os dados dos veículos são mantidos em um banco de dados relacional.
 A descrição completa do projeto pode ser encontrada [aqui.](https://gitlab.com/rangeldiego/desafio-estagiario-3/-/blob/main/README.md)
 
-> **Note**
-> O projeto está atualmente hospedado na plataforma [Railway](https://railway.app). Você pode interagir com os endpoints da API através [desta página.](https://desafio3.up.railway.app/swagger-ui/index.html)
-
 ## Tecnologias utilizadas
 
 - Java 17
